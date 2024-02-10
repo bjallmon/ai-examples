@@ -34,3 +34,6 @@ Update the .env file with your OPENAI_KEY
 ### Install dependencies
 
 `pip3 install -r requirements.txt`
+
+### Try it out!
+`python3 cs_bot.py`

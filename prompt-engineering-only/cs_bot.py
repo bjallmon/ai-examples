@@ -13,21 +13,20 @@ SECONDARY_CATEGORIES_ = {
     "General Inquiry": ["Product information", "Pricing", "Feedback", "Speak to a human", "Unknown"]
 }
 
+
 class CustomerServiceChatClient:
     def __init__(self):
         self.client = OpenAI()
 
     def send_query(self, query: str) -> json:
         prompt = (
-            f"""You will be provided with customer service queries. Classify each query into a primary category and a 
-            secondary category.
+            f"""You will be provided with customer service queries. Classify each query into a primary category and a secondary category.
 
-            Provide your output in json format 
-            with the primary category as the key and the secondary category as the value.
+            Provide your output in json format with the primary category as the key and the secondary category as the value.
 
-                Primary categories: { PRIMARY_CATEGORIES_ }
+                Primary categories: {PRIMARY_CATEGORIES_}
 
-                Secondary categories by primary category as the key : { SECONDARY_CATEGORIES_ }
+                Secondary categories by primary category as the key : {SECONDARY_CATEGORIES_}
             """
         )
         query_with_prompt = f"{prompt} User: {query}"
@@ -70,6 +69,7 @@ class CustomerServiceChatClient:
 
         else:
             return {"error": "No response received from the model"}
+
 
 # The main function for mocking up an app interaction with a terminal client
 def main():

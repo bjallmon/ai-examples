@@ -9,8 +9,7 @@ PRIMARY_CATEGORIES_ = ["Billing", "Technical Support", "Account Management", "Ge
 SECONDARY_CATEGORIES_ = {
     "Billing": ["Unsubscribe or upgrade", "Add a payment method", "Explanation for charge", "Dispute a charge"],
     "Technical Support": ["Troubleshooting", "Device compatibility", "Software updates"],
-    "Account Management": ["Password reset", "Update personal information", "Close account",
-                           "Account security"],
+    "Account Management": ["Password reset", "Update personal information", "Close account", "Account security"],
     "General Inquiry": ["Product information", "Pricing", "Feedback", "Speak to a human", "Unknown"]
 }
 

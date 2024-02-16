@@ -39,6 +39,7 @@ class CustomerServiceChatClient:
             frequency_penalty=0,
             presence_penalty=0
         )
+
         return self.process_response(response)
 
     # this method is likely unnecessary with proper prompt engineering with some fine tuning.

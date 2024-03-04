@@ -1,17 +1,8 @@
-from openai import OpenAI, ChatCompletion
-import json
 import dotenv
+import json
+from openai import OpenAI
 
 dotenv.load_dotenv()
-
-# Customer service categories that could be injected used in both the prompt instruction and response processing
-PRIMARY_CATEGORIES_ = ["Billing", "Technical Support", "Account Management", "General Inquiry"]
-SECONDARY_CATEGORIES_ = {
-    "Billing": ["Unsubscribe or upgrade", "Add a payment method", "Explanation for charge", "Dispute a charge"],
-    "Technical Support": ["Troubleshooting", "Device compatibility", "Software updates"],
-    "Account Management": ["Password reset", "Update personal information", "Close account", "Account security"],
-    "General Inquiry": ["Product information", "Pricing", "Feedback", "Speak to a human", "Unknown"]
-}
 
 
 class CustomerServiceChatClient:
@@ -20,13 +11,13 @@ class CustomerServiceChatClient:
 
     def send_query(self, query: str) -> json:
         prompt = (
-            f"""You will be provided with customer service queries. Classify each query into a primary category and a secondary category.
-
-            Provide your output in json format with the primary category as the key and the secondary category as the value.
-
-                Primary categories: {PRIMARY_CATEGORIES_}
-
-                Secondary categories by primary category as the key : {SECONDARY_CATEGORIES_}
+            """You will be provided with customer service queries. Classify each query into a primary category and a secondary category. \
+            Provide your output in json format with the primary category as the key and the secondary category as the value. \
+                Primary categories: "Billing", "Technical Support", "Account Management", or "General Inquiry" \
+                "Billing" secondary categories: "Unsubscribe or upgrade", "Add a payment method", "Explanation for charge", "Dispute a charge" \
+                "Technical Support" secondary categories: "Troubleshooting", "Device compatibility", "Software updates" \
+                "Account Management" secondary categories: "Password reset", "Update personal information", "Close account", "Account security" \
+                "General Inquiry" secondary categories: "Product information", "Pricing", "Feedback", "Speak to a human", "Unknown" \
             """
         )
         query_with_prompt = f"{prompt} User: {query}"
@@ -40,39 +31,9 @@ class CustomerServiceChatClient:
             presence_penalty=0
         )
 
-        return self.process_response(response)
-
-    # this method is likely unnecessary with proper prompt engineering with some fine tuning.
-    @staticmethod
-    def process_response(response: ChatCompletion) -> dict:
-        primary_categories = PRIMARY_CATEGORIES_
-        secondary_categories = SECONDARY_CATEGORIES_
-
-        # Check if response has choices and choices are not empty
-        if hasattr(response, 'choices') and response.choices:
-            system_response = response.choices[0].message.content
-            # print(system_response)
-            primary_category = None
-            secondary_category = None
-
-            for category in primary_categories:
-                if category in system_response:
-                    primary_category = category
-                    break
-
-            if primary_category:
-                for sub_category in secondary_categories[primary_category]:
-                    if sub_category in system_response:
-                        secondary_category = sub_category
-                        break
-
-            return {primary_category: secondary_category}
-
-        else:
-            return {"error": "No response received from the model"}
+        return response.choices[0].message.content
 
 
-# The main function for mocking up an app interaction with a terminal client
 def main():
     client = CustomerServiceChatClient()
 
@@ -86,7 +47,7 @@ def main():
             break
 
         response = client.send_query(query)
-        print(json.dumps(response, indent=4))
+        print(response)
 
 
 if __name__ == "__main__":

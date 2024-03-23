@@ -1,4 +1,4 @@
-from openai import OpenAI, ChatCompletion
+from openai import OpenAI
 import json
 import dotenv
 

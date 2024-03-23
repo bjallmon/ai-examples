@@ -1,9 +1,8 @@
-import dotenv
+from openai import OpenAI, ChatCompletion
 import json
-from openai import OpenAI
+import dotenv
 
 dotenv.load_dotenv()
-
 
 class CustomerServiceChatClient:
     def __init__(self):
@@ -11,7 +10,8 @@ class CustomerServiceChatClient:
 
     def send_query(self, query: str) -> json:
         prompt = (
-            """You will be provided with customer service queries. Classify each query into a primary category and a secondary category.
+            f"""
+            You will be provided with customer service queries. Classify each query into a primary category and a secondary category.
             Provide your output in json format with the primary category as the key and the secondary category as the value.
             Primary categories: Billing, Technical Support, Account Management, General Inquiry
             Secondary categories by primary category as the key:
@@ -24,16 +24,14 @@ class CustomerServiceChatClient:
         query_with_prompt = f"{prompt} User: {query}"
 
         response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="[your model id]", # This is the fine-tuned base model id
             messages=[{"role": "user", "content": query_with_prompt}],
             max_tokens=256,
             top_p=1,
             frequency_penalty=0,
             presence_penalty=0
         )
-
         return response.choices[0].message.content
-
 
 def main():
     client = CustomerServiceChatClient()

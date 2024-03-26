@@ -8,7 +8,7 @@ class CustomerServiceChatClient:
     def __init__(self):
         self.client = OpenAI()
 
-    def send_query(self, query: str) -> json:
+    def send_query(self, query: str) -> str:
         prompt = (
             f"""
             You will be provided with customer service queries. Classify each query into a primary category and a secondary category.

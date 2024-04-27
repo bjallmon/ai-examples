@@ -8,8 +8,11 @@ client = OpenAI()
 stream = client.chat.completions.create(
     model="gpt-3.5-turbo",
     temperature=1,
-    messages=[{"role": "user", "content": "Create a book of sarcastic dad jokes with chapters for cars, space, "
-                                          "family, music, and food with 10 jokes per chapter."}],
+    messages=[{
+        "role": "user",
+        "content": """Create a book of sarcastic dad jokes with chapters for cars, space, family, music, and food 
+        with 10 jokes per chapter."""
+    }],
     stream=True,
 )
 
